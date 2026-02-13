@@ -12,20 +12,19 @@
 /* ===== RESET ===== */
 * { margin:0; padding:0; box-sizing:border-box; }
 
-html {
-  scroll-snap-type: y mandatory;
-  scroll-behavior: smooth;
+html, body{
+  height:100%;
+  overflow:hidden;
 }
 
-body {
+body{
   background:#050505;
   color:#f1f1f1;
   font-family:'DM Sans', sans-serif;
-  overflow-x:hidden;
-  transition:1.2s ease;
 }
 
-body::before {
+/* glow */
+body::before{
   content:"";
   position:fixed;
   inset:0;
@@ -38,16 +37,24 @@ body.focus::before{
   background:radial-gradient(circle at 50% 55%, rgba(180,0,0,0.45), transparent 70%);
 }
 
+/* ===== SECTION ===== */
 section{
   height:100vh;
-  scroll-snap-align:start;
   display:flex;
-  flex-direction:column;
   justify-content:center;
   align-items:center;
-  text-align:center;
-  padding:40px;
   position:relative;
+  padding:40px;
+  text-align:center;
+}
+
+/* visual center adjustment */
+.center{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  transform:translateY(-5vh); /* ini bikin kerasa pas */
 }
 
 section::after{
@@ -60,6 +67,7 @@ section::after{
   opacity:.4;
 }
 
+/* ===== TEXT ===== */
 .title{
   font-family:'Cormorant Garamond', serif;
   font-size:42px;
@@ -77,7 +85,7 @@ section::after{
   font-size:19px;
   line-height:1.9;
   opacity:0;
-  transform:translateY(40px);
+  transform:translateY(30px);
   transition:1s ease;
 }
 
@@ -91,8 +99,9 @@ section::after{
   transform:translateY(-20px);
 }
 
+/* ===== BUTTON ===== */
 .hold{
-  margin-top:100px;
+  margin-top:80px;
   padding:14px 32px;
   border-radius:999px;
   background:transparent;
@@ -111,10 +120,11 @@ section::after{
 .hold:hover{opacity:1}
 .hold:active{transform:scale(.96)}
 
+/* ===== FINAL ===== */
 .final{
   position:absolute;
   font-family:'Cormorant Garamond', serif;
-  font-size:38px;
+  font-size:27px;
   letter-spacing:.06em;
   color:#fff;
   opacity:0;
@@ -137,6 +147,7 @@ section::after{
   opacity:.6;
 }
 
+/* ===== DECOR ===== */
 .decor{
   position:fixed;
   pointer-events:none;
@@ -166,89 +177,110 @@ section::after{
 <img src="cat.png" class="decor cat">
 
 <section>
-  <div class="title">hawoo babe.</div>
-  <div class="sub">scroll slowly.</div>
-</section>
-
-<section>
-  <div class="card">
-    i was thinking abt what to write.<br><br>
-    turns out i overthought it.
+  <div class="center">
+    <div class="title">hawoo babe!!</div>
+    <div class="sub">scroll slowly.</div>
   </div>
 </section>
 
 <section>
-  <div class="card">
-    i’m not good w/ words.<br>
-    or big romantic stuff.<br><br>
-    u already know that.
+  <div class="center">
+    <div class="card">i was thinking abt what to write.<br><br>turns out i overthought it.</div>
   </div>
 </section>
 
 <section>
-  <div class="card">
-    i just like having u around.<br>
-    even when we’re quiet.<br>
-    even when we’re tired.
+  <div class="center">
+    <div class="card">i’m not good w/ words.<br>or big romantic stuff.<br><br>u already know that.</div>
   </div>
 </section>
 
 <section>
-  <div class="card">
-    and yaaaa…<br>
-    sometimes u switch to coach mode.<br>
-    like u r giving life instructions.<br><br>
-    like u r my personal life update patch.
+  <div class="center">
+    <div class="card">i just like having u around.<br>even when we’re quiet.<br>even when we’re tired.</div>
   </div>
 </section>
 
 <section>
-  <div class="card">
-    but somehow,<br>
-    that’s what makes me<br>
-    feel safe w/ u.
+  <div class="center">
+    <div class="card">and yaaaa…<br>sometimes u switch to coach mode.<br>like u r giving life instructions.<br><br>like u r my personal life update patch.</div>
   </div>
 </section>
 
 <section>
-  <div class="card">
-    babe…<br>
-    thank u.<br><br>
-    for staying.<br>
-    even when i’m complicated.
+  <div class="center">
+    <div class="card">but somehow,<br>that’s what makes me<br>feel safe w/ u.</div>
+  </div>
+</section>
+
+<section>
+  <div class="center">
+    <div class="card">babe…<br>thank u.<br><br>for staying.<br>even when i’m complicated.</div>
   </div>
 </section>
 
 <section id="last">
-  <div class="card" id="lastText">
-    i don’t need big things.<br>
-    or special moments.<br><br>
-    i just like<br>
-    being w/ u.
-  </div>
+  <div class="center">
+    <div class="card" id="lastText">
+      i don’t need big things.<br>
+      or special moments.<br><br>
+      i just like<br>
+      being w/ u.
+    </div>
 
-  <button class="hold" id="holdBtn">hold for a second</button>
+    <button class="hold" id="holdBtn">hold for a second</button>
 
-  <div class="final" id="final">
-    happy valentine’s day, babe.<br>
-    <span class="sign">w/ love, kimy</span>
+    <div class="final" id="final">
+      happy valentine’s day, babe.<br>
+      <span class="sign">w/ love, kimy</span>
+    </div>
   </div>
 </section>
 
 <script>
 
-const cards=document.querySelectorAll('.card');
+/* ===== SCROLL LOCK SYSTEM ===== */
+const sections = document.querySelectorAll("section");
+let index = 0;
+let locked = false;
 
+function goTo(i){
+  if(i < 0 || i >= sections.length) return;
+  locked = true;
+  index = i;
+  sections[i].scrollIntoView({behavior:"smooth"});
+  setTimeout(()=>locked=false,900);
+}
+
+window.addEventListener("wheel", e=>{
+  if(locked) return;
+  if(e.deltaY > 0) goTo(index+1);
+  else goTo(index-1);
+},{passive:false});
+
+let touchStartY = 0;
+window.addEventListener("touchstart", e=>{
+  touchStartY = e.touches[0].clientY;
+},{passive:true});
+
+window.addEventListener("touchend", e=>{
+  if(locked) return;
+  const diff = touchStartY - e.changedTouches[0].clientY;
+  if(Math.abs(diff) < 50) return;
+  if(diff > 0) goTo(index+1);
+  else goTo(index-1);
+});
+
+/* ===== CARD ANIMATION ===== */
+const cards=document.querySelectorAll('.card');
 const obs=new IntersectionObserver(entries=>{
   entries.forEach(e=>{
-    if(e.isIntersecting){
-      e.target.classList.add('show');
-    }
+    if(e.isIntersecting) e.target.classList.add('show');
   });
 },{threshold:.5});
-
 cards.forEach(c=>obs.observe(c));
 
+/* ===== FINAL HOLD ===== */
 let timer;
 const btn=document.getElementById('holdBtn');
 const final=document.getElementById('final');
@@ -256,7 +288,6 @@ const lastText=document.getElementById('lastText');
 
 btn.addEventListener('mousedown',start);
 btn.addEventListener('touchstart',start);
-
 btn.addEventListener('mouseup',cancel);
 btn.addEventListener('mouseleave',cancel);
 btn.addEventListener('touchend',cancel);
@@ -269,10 +300,7 @@ function start(){
     setTimeout(()=>final.classList.add('show'),500);
   },900);
 }
-
-function cancel(){
-  clearTimeout(timer);
-}
+function cancel(){ clearTimeout(timer); }
 
 </script>
 
