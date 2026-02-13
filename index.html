@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>for my baby</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+
+/* ===== RESET ===== */
+* { margin:0; padding:0; box-sizing:border-box; }
+
+html {
+  scroll-snap-type: y mandatory;
+  scroll-behavior: smooth;
+}
+
+body {
+  background:#050505;
+  color:#f1f1f1;
+  font-family:'DM Sans', sans-serif;
+  overflow-x:hidden;
+  transition:1.2s ease;
+}
+
+body::before {
+  content:"";
+  position:fixed;
+  inset:0;
+  background:radial-gradient(circle at 50% 20%, rgba(180,0,0,0.18), transparent 60%);
+  pointer-events:none;
+  transition:1.5s ease;
+}
+
+body.focus::before{
+  background:radial-gradient(circle at 50% 55%, rgba(180,0,0,0.45), transparent 70%);
+}
+
+section{
+  height:100vh;
+  scroll-snap-align:start;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  padding:40px;
+  position:relative;
+}
+
+section::after{
+  content:"";
+  position:absolute;
+  bottom:40px;
+  width:60px;
+  height:1px;
+  background:linear-gradient(to right,transparent,#7f1d1d,transparent);
+  opacity:.4;
+}
+
+.title{
+  font-family:'Cormorant Garamond', serif;
+  font-size:42px;
+  letter-spacing:.05em;
+}
+
+.sub{
+  margin-top:10px;
+  opacity:.4;
+  font-size:13px;
+}
+
+.card{
+  max-width:520px;
+  font-size:19px;
+  line-height:1.9;
+  opacity:0;
+  transform:translateY(40px);
+  transition:1s ease;
+}
+
+.card.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.card.fade{
+  opacity:0;
+  transform:translateY(-20px);
+}
+
+.hold{
+  margin-top:100px;
+  padding:14px 32px;
+  border-radius:999px;
+  background:transparent;
+  border:1px solid #8b0000;
+  color:#fff;
+  letter-spacing:.2em;
+  opacity:.6;
+  transition:.5s ease;
+}
+
+.hold.hide{
+  opacity:0;
+  transform:translateY(10px);
+}
+
+.hold:hover{opacity:1}
+.hold:active{transform:scale(.96)}
+
+.final{
+  position:absolute;
+  font-family:'Cormorant Garamond', serif;
+  font-size:38px;
+  letter-spacing:.06em;
+  color:#fff;
+  opacity:0;
+  transform:translateY(20px);
+  transition:1.8s ease;
+  text-shadow:0 0 35px rgba(179,0,0,.8);
+}
+
+.final.show{
+  opacity:1;
+  transform:translateY(0);
+}
+
+.sign{
+  display:block;
+  font-family:'DM Sans', sans-serif;
+  font-size:14px;
+  letter-spacing:.2em;
+  margin-top:18px;
+  opacity:.6;
+}
+
+.decor{
+  position:fixed;
+  pointer-events:none;
+  opacity:.12;
+  filter:invert(1) brightness(1.6);
+}
+
+.bat{
+  top:6%;
+  left:50%;
+  transform:translateX(-50%);
+  width:260px;
+}
+
+.cat{
+  bottom:8%;
+  right:6%;
+  width:150px;
+}
+
+</style>
+</head>
+
+<body>
+
+<img src="bat.png" class="decor bat">
+<img src="cat.png" class="decor cat">
+
+<section>
+  <div class="title">hawoo babe.</div>
+  <div class="sub">scroll slowly.</div>
+</section>
+
+<section>
+  <div class="card">
+    i was thinking abt what to write.<br><br>
+    turns out i overthought it.
+  </div>
+</section>
+
+<section>
+  <div class="card">
+    i’m not good w/ words.<br>
+    or big romantic stuff.<br><br>
+    u already know that.
+  </div>
+</section>
+
+<section>
+  <div class="card">
+    i just like having u around.<br>
+    even when we’re quiet.<br>
+    even when we’re tired.
+  </div>
+</section>
+
+<section>
+  <div class="card">
+    and yaaaa…<br>
+    sometimes u switch to coach mode.<br>
+    like u r giving life instructions.<br><br>
+    like u r my personal life update patch.
+  </div>
+</section>
+
+<section>
+  <div class="card">
+    but somehow,<br>
+    that’s what makes me<br>
+    feel safe w/ u.
+  </div>
+</section>
+
+<section>
+  <div class="card">
+    babe…<br>
+    thank u.<br><br>
+    for staying.<br>
+    even when i’m complicated.
+  </div>
+</section>
+
+<section id="last">
+  <div class="card" id="lastText">
+    i don’t need big things.<br>
+    or special moments.<br><br>
+    i just like<br>
+    being w/ u.
+  </div>
+
+  <button class="hold" id="holdBtn">hold for a second</button>
+
+  <div class="final" id="final">
+    happy valentine’s day, babe.<br>
+    <span class="sign">w/ love, kimy</span>
+  </div>
+</section>
+
+<script>
+
+const cards=document.querySelectorAll('.card');
+
+const obs=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting){
+      e.target.classList.add('show');
+    }
+  });
+},{threshold:.5});
+
+cards.forEach(c=>obs.observe(c));
+
+let timer;
+const btn=document.getElementById('holdBtn');
+const final=document.getElementById('final');
+const lastText=document.getElementById('lastText');
+
+btn.addEventListener('mousedown',start);
+btn.addEventListener('touchstart',start);
+
+btn.addEventListener('mouseup',cancel);
+btn.addEventListener('mouseleave',cancel);
+btn.addEventListener('touchend',cancel);
+
+function start(){
+  timer=setTimeout(()=>{
+    document.body.classList.add('focus');
+    lastText.classList.add('fade');
+    btn.classList.add('hide');
+    setTimeout(()=>final.classList.add('show'),500);
+  },900);
+}
+
+function cancel(){
+  clearTimeout(timer);
+}
+
+</script>
+
+</body>
+</html>
